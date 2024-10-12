@@ -1,10 +1,12 @@
-import {config as conf} from "dotenv";
+import {config as conf, config} from "dotenv";
 
 conf();
 
 export const _config = {
-  PORT: process.env.PORT
+  PORT: process.env.PORT,
+  MONGODB_URL: process.env.MONGODB_URL,
+  DB_NAME: process.env.DB_NAME
   
 };
 
-export const config = Object.freeze(_config);
+export const configuration = Object.freeze(_config);
