@@ -1,7 +1,9 @@
 import app from "./src/app";
+import { config } from "./src/config/config";
 
 
-const PORT = process.env.PORT || 3000;
+const PORT = config.PORT;
+
 
 const startServer = async () => {
     app.listen(PORT, () => {
