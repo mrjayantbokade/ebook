@@ -5,7 +5,8 @@ conf();
 export const _config = {
   PORT: process.env.PORT,
   MONGODB_URL: process.env.MONGODB_URL,
-  DB_NAME: process.env.DB_NAME
+  DB_NAME: process.env.DB_NAME,
+  NODE_ENV: process.env.NODE_ENV
   
 };
 

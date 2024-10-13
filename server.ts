@@ -8,10 +8,12 @@ import dbConnect from "./src/db/dbConnect";
 const startServer = async () => {
 
     const PORT = configuration.PORT;
-    await dbConnect();
+    await dbConnect().then(() => {
+        console.log("Database connected successfully");
+        app.listen(PORT, () => {
+            console.log(`Server is running on port https://localhost:${PORT}`);
+        });
 
-    app.listen(PORT, () => {
-        console.log(`Server is running on port https://localhost:${PORT}`);
     });
 };
 
