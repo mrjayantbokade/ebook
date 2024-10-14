@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
     const data:number  = 10;
     res.status(200)
     .json(
-        new ApiResponse(200, "home page it is", data)
+        new ApiResponse(200, data, "this is home page")
     )
 });
 
