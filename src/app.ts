@@ -3,7 +3,7 @@ const app = express();
 import globalErrorHandler from "./Middlewares/GlobalErrorHandler";
 import { ApiResponse } from "./util/ApiResponse";
 import mongoose from "mongoose";
-import userRouter from "./User/userRouter";
+import userRouter from "./Author/authorRouter";
 
 
 

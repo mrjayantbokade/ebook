@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import { ApiResponse } from "../util/ApiResponse";
 import createHttpError from "http-errors";
-import userModel from "./userModel";
-import exp from "constants";
+import userModel from "./authorModel";
+import bcrypt from "bcrypt";
+import authorModel from "./authorModel";
 
-
- const  userRegister:any = async (req: Request, res: Response, next: NextFunction) => {
+ const  authorRegister:any = async (req: Request, res: Response, next: NextFunction) => {
 
     const { name, email, password } = req.body;
 
@@ -48,28 +48,49 @@ import exp from "constants";
 
 
 
-    const user = await userModel.findOne({email})
-    if(user){
-        const error = createHttpError(400, "user already exist");
+    const author = await authorModel.findOne({email})
+    if(author){
+        const error = createHttpError(400, "user/author already exist");
         return res.status(400)
                 .json(
                     new ApiResponse(
                         400,
                         error,
-                        "user already exist"
+                        "user/author already exist"
                     )
                 )
           
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10) 
 
-    const newUser = new userModel({
-        name: name,
-        email: email,
-        password: password
-      });
+    //Way 1: This is one way to save or create new user
 
-      const createdUser = await newUser.save();
+    // const newAuthor = await new authorModel({
+    //     name: name,
+    //     email: email,
+    //     password: hashedPassword
+    //   });
+
+    // const createdAuthor = await newAuthor.save();
+
+
+
+    //Way 2: Here is another way to 
+
+    const serverResponse = await authorModel.create(
+        {
+            name,
+            email,
+            password: hashedPassword
+        })
+
+
+    const createdAuthor= {
+        _id: serverResponse._id,
+        
+    }
+      
 
 
 res.status(201)
@@ -77,7 +98,7 @@ res.status(201)
 
         new ApiResponse(
             201,
-            createdUser,
+            createdAuthor,
             "user registered successfully"
         )
     )
@@ -96,17 +117,12 @@ res.status(201)
 
 const userLogin:any = async(req: Request, res:Response, next:NextFunction) =>{
 
-
     // take input email and password and throw error if not InputDeviceInfo
     // check if email exist 
     // if not create error and send response that user not exist 
     // if exist then check if password and retried password are matching 
     // if not then send incorrect password
     // if yes then send res for now that login successfull
-
-
-
-
 
     const {email, password} = req.body;
 
@@ -116,26 +132,41 @@ const userLogin:any = async(req: Request, res:Response, next:NextFunction) =>{
     }
 
 
-    const user = await userModel.findOne({email})
+    const user = await authorModel.findOne({email})
 
     if(!user){
         const err = createHttpError(400, "user does not exist")
         return res.status(400).json(new ApiResponse(400, err, "user does not exist"))
     }
 
+    // console.log("user:", user)
    
+    const checkPassword = await bcrypt.compare(password, user.password)
 
-   if(password === user.password){
+// console.log(checkPassword, "checked password")
+
+
+
+   if(checkPassword){
+    
+    const serverResponse = {
+        _id: user._id,
+        name: user.name,
+        email: user.email
+        // token: user.accessToken
+       }
+
     return res.status(200)
     .json(
         new ApiResponse(
             200,
-            user,
+            serverResponse,
             "login successfully"
 
         )
     )
    }
+
 
    return res.status(400)
    .json(
@@ -154,4 +185,4 @@ const userLogin:any = async(req: Request, res:Response, next:NextFunction) =>{
     
 }
 
-export { userRegister, userLogin }
+export { authorRegister, userLogin }

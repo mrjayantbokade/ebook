@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
-import { User } from "./userTypes";
+import { IAuthor } from "./authorTypes";
 
 
 
 
-const userSchema = new mongoose.Schema<User>(
+const authorSchema = new mongoose.Schema<IAuthor>(
     {
 
         name: {
@@ -26,5 +26,5 @@ const userSchema = new mongoose.Schema<User>(
 
 
 // const User = mongoose.model("User", userSchema, "Author");   // in case you want to override the User to Author 
-export default mongoose.model<User>("User", userSchema);
+export default mongoose.model<IAuthor>("Author", authorSchema);
 
