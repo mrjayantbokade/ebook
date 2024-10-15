@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 import { IAuthor } from "./authorTypes";
+import { configuration } from "../config/config";
+import jwt from "jsonwebtoken"
 
 
 
@@ -23,6 +25,26 @@ const authorSchema = new mongoose.Schema<IAuthor>(
     },
     { timestamps: true }
 )
+
+
+
+// authorSchema.methods.generateAccessToken = function () {
+
+//     const token = jwt.sign({
+
+
+//         name: this.name,
+//         email: this.email,
+
+
+//     },
+//         configuration.JWT_SERCRET as string
+//         ,
+//         {
+//             expiresIn: "7d",
+//             // algorithm:"HS256" not neccessary cause it uses by default hs256 
+//         })
+// }
 
 
 // const User = mongoose.model("User", userSchema, "Author");   // in case you want to override the User to Author 
