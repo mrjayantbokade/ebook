@@ -13,10 +13,12 @@ const bookController = asyncHandler(
 
         const { title, author, description, genre } = req.body;
 
-        if (!title || !author ) {
+        if (!title || !description ) {
             return next(createHttpError(400, "Tittle and description are required"))
 
         }
+
+        
         const book = {
             "title": title, 
             "author": author,
@@ -24,6 +26,7 @@ const bookController = asyncHandler(
             "genre": genre
         }
 
+        console.log(book)
         return res.status(200).json(
             new ApiResponse(
                 201,
