@@ -13,6 +13,7 @@ const globalErrorHandler:any = (err:HttpError, req:Request, res:Response, next:N
     return res.status(statusCode)
     .json(
         {
+            "statusCode":statusCode,
             "message":message,
             "errorStack":stack
         }
