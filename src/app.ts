@@ -4,6 +4,7 @@ import globalErrorHandler from "./Middlewares/GlobalErrorHandler";
 import { ApiResponse } from "./util/ApiResponse";
 import mongoose from "mongoose";
 import userRouter from "./Author/authorRouter";
+import bookRouter from "./Book/bookRouter";
 
 
 
@@ -23,6 +24,7 @@ app.get("/", (req, res) => {
 
 
 app.use("/api/v1/users",userRouter);
+app.use("/api/v1/books",bookRouter);
 
 
 app.use(globalErrorHandler);
