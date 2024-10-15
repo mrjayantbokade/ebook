@@ -3,7 +3,7 @@ import { IAuthor } from "../Author/authorTypes";
 export interface IBook{
 
     _id: string,
-    title: string,
+    tittle: string,
     author: IAuthor,
     file: string,
     coverImage: string,

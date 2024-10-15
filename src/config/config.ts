@@ -9,7 +9,10 @@ export const _config = {
   NODE_ENV: process.env.NODE_ENV,
   JWT_SERCRET: process.env.JWT_SECRET,
   ACCESS_TOKEN_SECRET : process.env.ACCESS_TOKEN_SECRET,
-  REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET
+  REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET,
+  cloud_name: process.env.CLOUD_NAME,
+  cloud_api_key: process.env.CLOUD_API_KEY,
+  cloud_api_secret: process.env.CLOUD_SECRET,
    
   
 };

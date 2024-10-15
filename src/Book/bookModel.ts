@@ -4,13 +4,12 @@ import { IBook } from "./bookTypes";
 
 const bookSchema = new mongoose.Schema<IBook>(
     {
-        title: {
+        tittle: {
             type: String,
             required: true,
         },
         author: {
-            type: Schema.Types.ObjectId,
-            ref: "Author",
+            type: mongoose.Schema.Types.ObjectId,
             required: true,
         },
         file: {
@@ -25,7 +24,7 @@ const bookSchema = new mongoose.Schema<IBook>(
         },
         genre: {
             type: String,
-            
+
 
         }
     },

@@ -10,7 +10,7 @@ const bookRouter = Router();
 const upload = multer({
     dest: path.resolve(__dirname, '../../public/data/uploads'),
     limits: {
-        fileSize: 1024 * 1024 * 30 //3e7 means 30MB
+        fileSize: 1024 * 1024 * 10 //3e7 means 30MB
     }
 })
 
