@@ -22,6 +22,10 @@ const authorSchema = new mongoose.Schema<IAuthor>(
             type: String,
             required: true,
         },
+        token: {
+
+            type: String,
+        }
     },
     { timestamps: true }
 )

@@ -99,9 +99,9 @@ const authorRegister: any = asyncHandler(
 
         const token = jwt.sign({
 
-          
+
             sub: serverResponse._id,
-          
+
 
         }, configuration.JWT_SERCRET as string
             , {
@@ -138,14 +138,6 @@ const authorRegister: any = asyncHandler(
 // login
 const userLogin: any = asyncHandler(
     async (req: Request, res: Response, next: NextFunction) => {
-
-        // take input email and password and throw error if not InputDeviceInfo
-        // check if email exist 
-        // if not create error and send response that user not exist 
-        // if exist then check if password and retried password are matching 
-        // if not then send incorrect password
-        // if yes then send res for now that login successfull
-
         const { email, password } = req.body;
 
         if (!email || !password) {
@@ -162,62 +154,25 @@ const userLogin: any = asyncHandler(
             return res.status(400).json(new ApiResponse(400, err, "user does not exist"))
         }
 
-        // console.log("user:", user)
 
         const checkPassword = await bcrypt.compare(password, user.password)
 
-        // console.log(checkPassword, "checked password")
-
-        const token = jwt.sign({
-
-          
-            sub: user._id,
-          
-
-        }, configuration.JWT_SERCRET as string
-            , {
-                expiresIn: "7d",
-                // algorithm:"HS256" not neccessary cause it uses by default hs256 
-            })
-
-
-
         if (checkPassword) {
-
-            const options = {
-                httpOnly: true,
-                secure: true,
+            if (!user.token) {
+                const token = jwt.sign({ sub: user._id }, configuration.JWT_SERCRET as string, { expiresIn: '7d' });
+                user.token = token;
+                await user.save();
             }
-           
-            return res.status(200)
-            .cookie("token", token, options)
-                .json(
-                    new ApiResponse(
-                        200,
-                        {},
-                        "login successfully"
-
-                    )
-                )
+            return res.status(200).cookie("token", user.token).json(new ApiResponse(200, { token: user.token }, "Login successful"));
+        } else {
+            const err = createHttpError(400, "Invalid password");
+            return res.status(400).json(new ApiResponse(400, err, "Invalid password"));
         }
 
 
-        return res.status(400)
-            .json(
-                new ApiResponse(
-                    400,
-                    "",
-                    "invalid credentials"
-                )
-            )
-
-
-
-
-
-
-
-    }
+        }
 
 )
 export { authorRegister, userLogin }
+
+

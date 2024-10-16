@@ -5,15 +5,18 @@ import { ApiResponse } from "../util/ApiResponse";
 import createHttpError from "http-errors";
 import cloudinary from "../config/cloudinary";
 import path from "node:path";
+import { AuthRequest } from "../Middlewares/Authenticate";
 
 
 
 const bookController = asyncHandler(
     async (req: Request, res: Response, next: NextFunction) => {
 
+       
+        
 
 
-        const { tittle, author, description, genre } = req.body;
+        const { tittle, description, genre } = req.body;
 
 
 
@@ -43,9 +46,10 @@ const bookController = asyncHandler(
 
 
 
+        const _req = req as AuthRequest;
         const createdBookResult = await bookModel.create({
             tittle,
-            author:"670edf644fa47bceacb34a37",
+            author:_req.userId,
             description,
             genre,
             coverImage: (await coverUploadResult).url,
