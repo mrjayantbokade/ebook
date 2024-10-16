@@ -7,6 +7,7 @@ import authorModel from "./authorModel";
 import { asyncHandler } from "../util/asyncHandler";
 import jwt from "jsonwebtoken"
 import { configuration } from "../config/config";
+import { AuthRequest } from "../Middlewares/Authenticate";
 
 
 
@@ -136,7 +137,7 @@ const authorRegister: any = asyncHandler(
 
 
 // login
-const userLogin: any = asyncHandler(
+const authorLogin: any = asyncHandler(
     async (req: Request, res: Response, next: NextFunction) => {
         const { email, password } = req.body;
 
@@ -173,6 +174,39 @@ const userLogin: any = asyncHandler(
         }
 
 )
-export { authorRegister, userLogin }
+
+
+const authorLogout = asyncHandler(
+    async (req: Request, res: Response, next: NextFunction) => {
+        
+        const _req = req as AuthRequest;
+        const userId = _req.userId;
+        const user = await authorModel.findByIdAndUpdate(userId,
+             {
+                $set: 
+                {
+                 token: undefined
+                }
+
+            }, 
+            {
+                new: true
+            }
+    )
+
+    const options = {
+        httpOnly: true,
+        secure: true,
+    }
+
+        return res.status(200)
+        .clearCookie("token", options)
+        .json(new ApiResponse(200, {  }, "Logout successful"));
+
+
+    }    
+)
+
+export { authorRegister, authorLogin, authorLogout  }
 
 
