@@ -100,7 +100,7 @@ const authorRegister: any = asyncHandler(
         const token = jwt.sign({
 
           
-            _id: serverResponse._id,
+            sub: serverResponse._id,
           
 
         }, configuration.JWT_SERCRET as string
@@ -171,7 +171,7 @@ const userLogin: any = asyncHandler(
         const token = jwt.sign({
 
           
-            _id: user._id,
+            sub: user._id,
           
 
         }, configuration.JWT_SERCRET as string
@@ -184,12 +184,17 @@ const userLogin: any = asyncHandler(
 
         if (checkPassword) {
 
+            const options = {
+                httpOnly: true,
+                secure: true,
+            }
            
             return res.status(200)
+            .cookie("token", token, options)
                 .json(
                     new ApiResponse(
                         200,
-                        {accessToken: token},
+                        {},
                         "login successfully"
 
                     )
